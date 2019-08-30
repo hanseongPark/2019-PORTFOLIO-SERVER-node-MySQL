@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.js": "/static/js/main.c4525a50.chunk.js",
+    "main.js.map": "/static/js/main.c4525a50.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.ea92a0de.js",
+    "runtime~main.js.map": "/static/js/runtime~main.ea92a0de.js.map",
+    "static/css/2.1c0868d8.chunk.css": "/static/css/2.1c0868d8.chunk.css",
+    "static/js/2.c0749489.chunk.js": "/static/js/2.c0749489.chunk.js",
+    "static/js/2.c0749489.chunk.js.map": "/static/js/2.c0749489.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.b15ae4fd3f00e282674af04e8f5a2078.js": "/precache-manifest.b15ae4fd3f00e282674af04e8f5a2078.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.1c0868d8.chunk.css.map": "/static/css/2.1c0868d8.chunk.css.map",
+    "static/media/Calorie.jpg": "/static/media/Calorie.e22d9029.jpg",
+    "static/media/Diet.png": "/static/media/Diet.40fa8a2e.png",
+    "static/media/Workout.jpg": "/static/media/Workout.0fdfbb33.jpg",
+    "static/media/call.png": "/static/media/call.814bbe23.png",
+    "static/media/item1.png": "/static/media/item1.41d265cb.png",
+    "static/media/item2.png": "/static/media/item2.2981f7f1.png",
+    "static/media/item3.png": "/static/media/item3.c61807a8.png",
+    "static/media/naverButton.PNG": "/static/media/naverButton.c4b74b7a.PNG",
+    "static/media/testerButton.png": "/static/media/testerButton.699723c9.png"
+  }
+}

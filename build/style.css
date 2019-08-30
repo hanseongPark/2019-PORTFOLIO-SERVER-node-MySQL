@@ -1,0 +1,92 @@
+body{
+  background-color: #e2dfdf!important;
+}
+
+.logo {
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  background-color: #212529;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+#greeting{
+  color: white;
+}
+
+.body.container-fluid{
+  margin-top: 4em;
+  background-color: #e2dfdf;
+  padding-top: 2em;
+}
+
+.footer.container{
+  margin-top: 2em;
+  border-top: 1px solid #cccaca;
+  background-color: #e2dfdf;
+}
+
+.intro.container{
+  margin-bottom: 40px;
+}
+.col-12.col-md-4{
+  margin-top:20px;
+}
+
+.col-lg-4{
+  margin-top:20px;
+  margin-bottom: 20px;
+}
+
+.carousel {
+  height: 500px!important;
+  margin-bottom: 60px;
+}
+
+.carousel-indicators li{
+  border: 1px solid #fff!important;
+  border-radius: 10px!important;
+  width: 10px!important;
+  height: 10px!important;
+}
+
+.carousel-inner > .carousel-item > img {
+  width:100%; 
+  height: 500px;
+}
+
+.img-circle {
+  border-radius: 50%;
+}
+.img-circle-footer {
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.time.text-muted.h4{
+  width: 140px;
+  height: 140px;
+  background-color: white; 
+  border-radius: 50%;
+  line-height: 140px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.nav-link.text-muted.h4{
+  width: 140px;
+  height: 140px;
+  background-color: white; 
+  border-radius: 50%;
+  padding: 45px
+}
+
+.intro.text-muted{
+  font-size: 14px;
+}
+
+.react-calendar {
+    width: 100%!important;
+    height: 100%; 
+}
+
