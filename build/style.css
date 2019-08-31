@@ -2,15 +2,6 @@ body{
   background-color: #e2dfdf!important;
 }
 
-.logo {
-  padding: 0.1em 0.2em 0.1em 0.2em;
-  background-color: #212529;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-}
-
 #greeting{
   color: white;
 }
@@ -27,7 +18,7 @@ body{
   background-color: #e2dfdf;
 }
 
-.intro.container{
+.btn.btn-outline-secondary{
   margin-bottom: 40px;
 }
 .col-12.col-md-4{
