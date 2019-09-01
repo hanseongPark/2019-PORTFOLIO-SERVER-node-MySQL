@@ -10,6 +10,7 @@ body{
   margin-top: 4em;
   background-color: #e2dfdf;
   padding-top: 2em;
+  margin-bottom:40px;
 }
 
 .footer.container{
@@ -23,6 +24,10 @@ body{
 }
 .col-12.col-md-4{
   margin-top:20px;
+}
+
+.intro.container{
+  margin-bottom: 40px;
 }
 
 .col-lg-4{
