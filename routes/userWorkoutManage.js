@@ -74,7 +74,6 @@ router.post('/chartdata', parseDate, parseTarget, async(req,res)=>{
                 [Op.lte]: req.body.newDate
             }
         },
-        order: [['date', 'DESC']],
         limit: 10,
         attributes:['date', 'volume']
     })
