@@ -1,6 +1,11 @@
 const {  User, Chest, Back, Core, Shoulder, Leg, Workout } = require('../models');
 const bcrypt = require('bcrypt');
 
+//이 파일에는 클라이언트와 서버간의 원활한 자료교환을 위해 만들어진 다양한 미들웨어가 존재합니다.
+//createTester미들웨어는 테스터 사용자들을 위한 미들웨어 입니다. 클라이언트의 ajax 요청 req.body에는
+//테스터 사용자의 비밀번호가 있습니다. 비밀번호는 bcrypt 패키지를 이용해 12번 해쉬화 한 후 데이터베이스에
+//저장됩니다. 이때 User 데이터베이스에 사용자 정보가 존재하며 다음 미들웨어를 호출하고 아니하면 새로운 사용자를
+//만든 후 다음 미들웨어를 호출하도록 하였습니다.
 exports.createTester = async(req, res, next) =>{
     const hash = await bcrypt.hash(req.body.password, 12);
     const user = await User.findOne({where: {
@@ -18,6 +23,9 @@ exports.createTester = async(req, res, next) =>{
     }
 }
 
+//Calculrating 미들웨어는 사용자의 나이, 체중, 키, 목표 등 다양한 정보를 클라이언트로부터 받습니다. 이 정보를 바탕으로
+//사용자의 칼로리 정보, 목표 등을 데이터베이스에 저장할 수 있도록 자료형을 변환합니다.
+
 exports.Calculrating = (req,res,next)=>{
     const user = req.body
     req.body.user_id = req.user.id
@@ -34,7 +42,7 @@ exports.Calculrating = (req,res,next)=>{
             }else{
                 calorie=((10*user.weight)+(6.25*user.height)-5*user.age-161)*user.activity-500
             }
-            protein = user.weight*2.204623*1.2
+            protein = user.weight*2.204623*1
             fat= user.weight*2.204623*0.25
             carb=(calorie-protein*4-fat*9)/4
     
@@ -46,7 +54,7 @@ exports.Calculrating = (req,res,next)=>{
             }else{
                 calorie=((10*user.weight)+(6.25*user.height)-5*user.age-161)*user.activity
             }
-            protein = user.weight*2.204623*1.2
+            protein = user.weight*2.204623*1.1
             fat= user.weight*2.204623*0.35
             carb=(calorie-protein*4-fat*9)/4
     
@@ -76,6 +84,8 @@ exports.Calculrating = (req,res,next)=>{
     next();
 }
 
+//parseDietData 미들웨어 역시 클라이언트의 식단관리 페이지에서 들어오는 사용자의
+//식단 관리 정보를 데이터베이스에 저장할 수 있도록 자료형 변환을 해줍니다.
 exports.parseDietData = (req,res,next)=>{
     const data = req.body
     data.user_id=req.user.id
@@ -87,6 +97,12 @@ exports.parseDietData = (req,res,next)=>{
     next();
 }
 
+//parseWorkoutData 미들웨어는 데이터베이스 자료저장을 위한 형변환과 더불어 한가지 기능이
+//더 있습니다. 사용자의 운동정보를 취합에 당일의 볼륨을 저장하는 것입니다. 사용자가 운동 정보를
+//저장하게 되면 타겟 부위의 운동 정보의 볼륨을 정합니다. 볼륨은 무게와 반복 수, 셋트를 곱해서 구하며
+//이렇게 구해진 볼륨은 운동 부위별 볼륨 데이터베이스에 유저 id를 외래키로 저장됩니다. 만약 사용자가 이전에
+//이미 저장해놓은 데이터가 있다면 새로 들어오는 볼륨을 이전 볼륨에 더해 다시 저장하며, 이전 볼륨 데이터가
+//없다면 새로 만들어서 저장하게 됩니다.
 exports.parseWorkoutData = async (req, res, next)=>{
     const data = req.body
     data.user_id=req.user.id
@@ -116,6 +132,10 @@ exports.parseWorkoutData = async (req, res, next)=>{
     next();
 }
 
+//parseDate 미들웨어는 날짜를 변환해주는 미들웨어입니다. 일반적인 정보들의 날짜는 toLocalDateString()을 통해
+//yyyy. mm. dd. 의 형식으로 저장하였습니다. 하지만 볼륨 데이터는 사용자가 볼륨차트를 확인할 시 가장 최근의 데이터를
+//10개 선별해서 보내줘야 합니다. 이때 기준 날짜와 최근 날짜의 비교를 위하여 날짜 데이터를 yyyymmdd의 형식으로 숫자로
+//저장하여 비교를 원활히 할 수 있도록 하였습니다.
 exports.parseDate=(req,res,next)=>{
     let y = req.body.date.split(' ')[0].slice(0,-1)
     let m = req.body.date.split(' ')[1].slice(0,-1)
@@ -130,6 +150,11 @@ exports.parseDate=(req,res,next)=>{
     next();
 }
 
+//사용자가 운동 관리 정보를 삭제, 수정 등의 변경을 할 시에는 단순히 운동관리 데이터뿐만
+//아니라 그와 연관된 각 부위의 볼륨 데이터 역시 변경해야합니다. 이를 위해 클라이언트로부터
+//운동관리 정보 삭제 요청이 들어오게 되면 deleteWorkout 미들웨어를 거치게 됩니다. 이 미들웨어는
+//사용자의 운동 정보를 destroy 하고 다시 그날의 운동 정보를 불러와 볼륨을 계산합니다. 이후
+//새로 계산된 볼륨을 수정하여 저장하게 됩니다.
 exports.deleteWorkout=async(req,res,next)=>{
 
     const data = await Workout.destroy({where:{id: req.body.id, date: req.body.date}})
@@ -162,6 +187,9 @@ exports.deleteWorkout=async(req,res,next)=>{
     next();
 }
 
+//parseTarget 미들웨어는 사용자의 운동 정보를 통해 계산된 볼륨이 어느
+//볼륨 데이터베이스에 저장될지를 분류해줍니다. 데이터느 req.body의 volumeTg에
+//저장되어 다음 미들웨어에서 사용됩니다.
 exports.parseTarget = (req, res, next)=>{
     switch(req.body.target){
         case '가슴': 

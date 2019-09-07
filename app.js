@@ -28,7 +28,7 @@ const authRouter = require('./routes/auth');
 //사용하였습니다.
 const { sequelize } = require('./models');
 
-//헬스 스케쥴러는 단순한 관리 웹 어플리케이션이기에 따로 약관이나 회원 주소 등의 정보가 필요하지 않기에
+//헬스 스케쥴러는 단순한 관리 웹 어플리케이션 입니다. 따로 약관이나 회원 주소 등의 정보가 필요하지 않기에
 //회원가입을 없애는 대신 카카오, 네이버 등의 로그인 api로 대체하였습니다. api가 필요로하는 인증절차
 //를 처리하기 위해 passport를 사용하였습니다.
 const passportConfig = require('./passport');
