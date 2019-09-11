@@ -54,24 +54,6 @@ router.delete('/', parseDate, parseTarget, deleteWorkout, async(req,res)=>{
     res.json(updateWorkout)
 });
 
-//POST:/user/workout/target 요청은 유저가 당일의 부위별 운동리스트를 확인할 때 발생합니다.
-//req.body에 담겨있는 유저id, 운동부위, 날짜를 바탕으로 모든 정보를 찾아내 클라이언트에
-//json으로 보내게 됩니다.
-router.post('/target', async(req,res)=>{
-    const data = await Workout.findAll({
-        where:{
-            user_id: req.user.id,
-            date: req.body.date,
-            target: req.body.target
-        }
-    })
-    if(data){
-        res.json(data);
-    }else{
-        res.json(null)
-    }
-    
-})
 
 //POST:/user/workout/chartdata 는 유저의 운동볼륨 차트 정보를 보내는 라우터입니다. 
 //우선 parseDate, parseTarget 미들웨어를 거치며 변환된 날짜와 운동 부위를 바탕으로

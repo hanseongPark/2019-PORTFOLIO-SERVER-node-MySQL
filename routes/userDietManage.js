@@ -33,26 +33,6 @@ router.post('/', parseDietData, async(req,res)=>{
     }
 })
 
-//POST:/user/dietmanage/time 은 유저가 클라이언트의 식단관리 중 하나를 클릭했을 때의 요청을
-//처리하는 라우터입니다. 우선 사용자의 아이디와 날짜 , 그리고 조회하기 원하는 식단리스트의 시간대를
-//바탕으로 DB를 검색합니다. 이후에 data가 있다면 그 값을 json 형태로 보내고, data가 없다면 null값을
-//반환합니다.
-router.post('/time', async(req,res)=>{
-    const data = await Diet.findAll({
-        where:{
-            user_id: req.user.id,
-            date: req.body.date,
-            time: req.body.time
-        }
-    })
-    if(data){
-        res.json(data);
-    }else{
-        res.json(null)
-    }
-    
-})
-
 //DELETE:/user/dietmanage 요청은 유저가 식단관리 리스트를 삭제할 때 처리합니다. 먼저 유저의 id와 날짜를
 //요소로 데이터를 지웁니다. 이후 data를 성공적으로 지웠다면 다시 그날의 식단리스트를 다 찾은 후에
 //클라이언트로 보내어 식단 리스트를 갱신하도록 만듭니다.
