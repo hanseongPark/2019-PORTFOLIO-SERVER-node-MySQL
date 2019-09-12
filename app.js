@@ -89,7 +89,9 @@ const sessionOption = {
 
 app.use(session(sessionOption));
 app.use(flash());
-//웹의 세션 정보를 passport 가 사용해 인증과정을 처리할 수 있도록 합니다.
+//웹의 세션 정보를 passport 가 사용해 인증과정을 처리할 수 있도록 합니다. passport.initialize 미들웨어는
+//요청(req객체)에 passport 설정을 심고, passport.session 미들웨어는 req.session 객체에 passport 정보를
+//저장합니다.
 app.use(passport.initialize());
 app.use(passport.session());
 //클라이언트의 ajax 요청을 다양한 라우터를 이용해 분리해서 처리합니다.

@@ -59,6 +59,7 @@ router.delete('/', parseDate, parseTarget, deleteWorkout, async(req,res)=>{
 //우선 parseDate, parseTarget 미들웨어를 거치며 변환된 날짜와 운동 부위를 바탕으로
 //데이터베이스에 접근합니다. 이후 기준 날짜와 가장 가까운 10일간의 데이터를 뽑아 사용자에게
 //보여주게 됩니다. Sequelize 의 Op연산자를 사용해 기준 날짜보다 작은 숫자의 날짜를 뽑아냈습니다.
+//그리고 날짜별 정렬 옵션을 이용하여 가장 최근의 데이터가 가장 아래쪽에 위치하도록 정렬하였습니다.
 router.post('/chartdata', parseDate, parseTarget, async(req,res)=>{
     const data = await req.body.volumeTg.findAll({
         where:{
@@ -67,6 +68,9 @@ router.post('/chartdata', parseDate, parseTarget, async(req,res)=>{
                 [Op.lte]: req.body.newDate
             }
         },
+        order:[
+            ['date', 'ASC']
+        ],
         limit: 10,
         attributes:['date', 'volume']
     })

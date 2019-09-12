@@ -154,7 +154,7 @@ exports.parseDate=(req,res,next)=>{
 //아니라 그와 연관된 각 부위의 볼륨 데이터 역시 변경해야합니다. 이를 위해 클라이언트로부터
 //운동관리 정보 삭제 요청이 들어오게 되면 deleteWorkout 미들웨어를 거치게 됩니다. 이 미들웨어는
 //사용자의 운동 정보를 destroy 하고 다시 그날의 운동 정보를 불러와 볼륨을 계산합니다. 이후
-//새로 계산된 볼륨을 수정하여 저장하게 됩니다.
+//새로 계산된 볼륨을 수정하여 저장하거나, 새로 계산된 볼륨이 0이라면 볼륨을 삭제합니다.
 exports.deleteWorkout=async(req,res,next)=>{
 
     const data = await Workout.destroy({where:{id: req.body.id, date: req.body.date}})
@@ -166,7 +166,6 @@ exports.deleteWorkout=async(req,res,next)=>{
         })
         req.body.srcData = JSON.stringify(callData)
     }
-
     const srcData=JSON.parse(req.body.srcData)
 
     let newVolume=0;
@@ -175,15 +174,18 @@ exports.deleteWorkout=async(req,res,next)=>{
         return newVolume += element.workweight*element.sets*element.reps
     });
 
-    req.body.volumeTg.update({
-         volume: newVolume,
-       }, {
-         where: {
-             user_id: req.user.id, 
-             date: req.body.newDate,
-             }
-       })
-
+    if(newVolume===0){
+        req.body.volumeTg.destroy({where:{user_id: req.user.id, date: req.body.newDate}})
+    }else{
+        req.body.volumeTg.update({
+            volume: newVolume,
+        }, {
+            where: {
+                user_id: req.user.id, 
+                date: req.body.newDate,
+            }
+        })
+    }
     next();
 }
 
