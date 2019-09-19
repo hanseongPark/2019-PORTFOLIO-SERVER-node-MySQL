@@ -19,7 +19,7 @@ router.get('/logout', (req, res) => {
 //POST:/login 요청은 사용자가 테스터로그인을 요청했을 때 발생합니다. 우선 createTester 미들웨어를 
 //거치며 테스터 정보가 있다면 정보를 불러오고 아니라면 테스터 정보를 생성합니다. 이후 passport 모듈의
 //authenticate 메소드를 이용하여 localStrategy 로그인 전략을 수행하게 됩니다. 로그인에 실패할 시 메인화면을
-//그래도 보여주고 로그인에 성공하면 req.user 정보를 보내 웹 클라이언트가 사용자 정보를 웹에 표시하도록 하였습니다.
+//보여주고 로그인에 성공하면 req.user 정보를 보내 웹 클라이언트가 사용자 정보를 웹에 표시하도록 하였습니다.
 router.post('/login', createTester, passport.authenticate('local', { failureRedirect: '/' }), (req, res)=>{
     res.json(req.user);
 })
