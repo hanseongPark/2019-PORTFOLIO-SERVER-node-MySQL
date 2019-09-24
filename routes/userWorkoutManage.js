@@ -69,7 +69,7 @@ router.post('/chartdata', parseDate, parseTarget, async(req,res)=>{
             }
         },
         order:[
-            ['date', 'ASC']
+            ['date', 'DESC']
         ],
         limit: 10,
         attributes:['date', 'volume']
